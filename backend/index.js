@@ -1,6 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = 5000;
+
+// Middleware for CORS - allow requests from frontend
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from Next.js frontend
+  credentials: true
+}));
 
 // Middleware for parsing JSON requests
 app.use(express.json());
