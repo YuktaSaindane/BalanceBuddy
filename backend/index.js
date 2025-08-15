@@ -214,7 +214,7 @@ app.use((req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
   console.log('Available endpoints:');
   console.log('  GET    / - Hello message');
@@ -223,4 +223,21 @@ app.listen(PORT, () => {
   console.log('  GET    /tasks/:id - Get a specific task');
   console.log('  PUT    /tasks/:id - Update a task');
   console.log('  DELETE /tasks/:id - Delete a task');
-}); 
+  console.log('Server should be running continuously...');
+});
+
+// Handle server errors
+server.on('error', (err) => {
+  console.error('Server error:', err);
+});
+
+// Handle process events
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+console.log('Script execution completed, server should be listening...'); 

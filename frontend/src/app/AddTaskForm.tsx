@@ -2,8 +2,19 @@
 
 import { useState } from 'react';
 
+// Task interface to match the backend API response
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface AddTaskFormProps {
-  onTaskAdded: () => void;
+  onTaskAdded: (task: Task) => void;
 }
 
 interface TaskFormData {
@@ -76,8 +87,8 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
         
         setSuccess('Task added successfully!');
         
-        // Call the callback to refresh the task list
-        onTaskAdded();
+        // Call the callback with the new task data for immediate display
+        onTaskAdded(result.data);
       } else {
         throw new Error(result.error || 'Failed to create task');
       }
