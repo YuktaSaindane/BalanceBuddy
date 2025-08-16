@@ -5,24 +5,20 @@ import TaskList from './TaskList';
 
 
 export default function Home() {
-
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start max-w-4xl w-full">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-8 text-blue-600">BalanceBuddy</h1>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center p-4 transition-colors">
+      <div className="w-full max-w-2xl px-6 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-light mb-3 text-slate-800 dark:text-slate-100 tracking-wide">BalanceBuddy</h1>
+          <p className="text-slate-600 dark:text-slate-400 text-sm">Organize your tasks with calm and clarity</p>
         </div>
-
-
 
         {/* Task Management */}
         <TaskList />
-      </main>
-      
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <div className="text-sm text-gray-500 dark:text-gray-400">
-          Frontend: localhost:3000 | Backend: localhost:5000
-        </div>
+      </div>
+
+      <footer className="mt-8 text-xs text-slate-500 dark:text-slate-500">
+        Frontend: localhost:3000 | Backend: localhost:5000
       </footer>
     </div>
   );

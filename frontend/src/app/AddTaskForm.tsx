@@ -101,16 +101,16 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
   };
 
   return (
-    <div className="w-full bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-        Add New Task
+    <div className="w-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm p-8 rounded-3xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+      <h2 className="text-xl font-light mb-6 text-slate-800 dark:text-slate-100">
+        Create a new task
       </h2>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title Field */}
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Title *
+          <label htmlFor="title" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+            Title
           </label>
           <input
             type="text"
@@ -118,15 +118,15 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-200"
-            placeholder="Enter task title"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl bg-white/80 dark:bg-slate-700/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200 placeholder:text-slate-400"
+            placeholder="What would you like to accomplish?"
             required
           />
         </div>
 
         {/* Description Field */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="description" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
             Description
           </label>
           <textarea
@@ -135,14 +135,14 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
             value={formData.description}
             onChange={handleInputChange}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-200"
-            placeholder="Enter task description (optional)"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl bg-white/80 dark:bg-slate-700/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200 resize-none placeholder:text-slate-400"
+            placeholder="Add any additional details..."
           />
         </div>
 
         {/* Priority Dropdown */}
         <div>
-          <label htmlFor="priority" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="priority" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
             Priority
           </label>
           <select
@@ -150,27 +150,27 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
             name="priority"
             value={formData.priority}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-200"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl bg-white/80 dark:bg-slate-700/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200"
           >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
           </select>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-            <div className="h-4 w-4 bg-red-500 rounded-full flex-shrink-0"></div>
-            <span className="text-red-700 dark:text-red-400 text-sm">{error}</span>
+          <div className="flex items-center gap-3 p-4 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-2xl">
+            <div className="h-4 w-4 bg-rose-400 rounded-full flex-shrink-0"></div>
+            <span className="text-rose-700 dark:text-rose-400 text-sm">{error}</span>
           </div>
         )}
 
         {/* Success Message */}
         {success && (
-          <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-            <div className="h-4 w-4 bg-green-500 rounded-full flex-shrink-0"></div>
-            <span className="text-green-700 dark:text-green-400 text-sm">{success}</span>
+          <div className="flex items-center gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl">
+            <div className="h-4 w-4 bg-emerald-400 rounded-full flex-shrink-0"></div>
+            <span className="text-emerald-700 dark:text-emerald-400 text-sm">{success}</span>
           </div>
         )}
 
@@ -178,15 +178,15 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+          className="w-full bg-gradient-to-r from-emerald-400 to-sky-400 hover:from-emerald-500 hover:to-sky-500 disabled:from-slate-300 disabled:to-slate-400 text-white font-medium py-4 px-6 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 shadow-sm hover:shadow-md transform hover:scale-[1.02] disabled:hover:scale-100 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-3">
               <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-              <span>Adding Task...</span>
+              <span>Creating task...</span>
             </div>
           ) : (
-            'Add Task'
+            'Create Task'
           )}
         </button>
       </form>

@@ -106,12 +106,16 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       const result = await response.json();
       
       if (result.success) {
-        // Update the task in local state
+        // Update the task in the local state immediately
         setTasks(prevTasks => 
           prevTasks.map(task => 
-            task.id === taskId ? result.data : task
+            task.id === taskId 
+              ? { ...task, ...result.data }
+              : task
           )
         );
+        
+        // Exit edit mode
         setEditingTaskId(null);
         setEditForm({ title: '', description: '', priority: 'medium' });
       } else {
@@ -126,10 +130,10 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
   };
 
   const deleteTask = async (taskId: number) => {
-    if (!window.confirm('Are you sure you want to delete this task?')) {
+    if (!confirm('Are you sure you want to delete this task?')) {
       return;
     }
-
+    
     try {
       setUpdatingTaskId(taskId);
       
@@ -144,7 +148,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       const result = await response.json();
       
       if (result.success) {
-        // Remove the task from local state
+        // Remove the task from local state immediately
         setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
       } else {
         throw new Error(result.error || 'Failed to delete task');
@@ -239,20 +243,19 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case 'high':
-        return <Badge className="bg-red-500 text-white hover:bg-red-600">High</Badge>;
+        return <Badge className="bg-rose-100 text-rose-700 border-rose-200 hover:bg-rose-200 transition-all duration-200">High</Badge>;
       case 'medium':
-        return <Badge className="bg-yellow-500 text-white hover:bg-yellow-600">Medium</Badge>;
+        return <Badge className="bg-sky-100 text-sky-700 border-sky-200 hover:bg-sky-200 transition-all duration-200">Medium</Badge>;
       case 'low':
-        return <Badge className="bg-green-500 text-white hover:bg-green-600">Low</Badge>;
+        return <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-200 transition-all duration-200">Low</Badge>;
       default:
-        return <Badge variant="secondary">{priority}</Badge>;
+        return <Badge className="bg-zinc-100 text-zinc-700 border-zinc-200">{priority}</Badge>;
     }
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
-      year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -262,25 +265,30 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
+      <div className="space-y-8">
         {/* Add Task Form */}
         <AddTaskForm onTaskAdded={addTask} />
         
         {/* Tasks Header */}
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-2xl font-light text-slate-800 dark:text-slate-100">
             Tasks
           </h2>
-          <Button onClick={fetchTasks} variant="outline" size="sm">
+          <Button 
+            onClick={fetchTasks} 
+            variant="outline" 
+            size="sm"
+            className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-all duration-200"
+          >
             Refresh
           </Button>
         </div>
         
-        <Card className="py-12">
+        <Card className="py-16 rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
           <CardContent className="text-center">
-            <div className="flex items-center justify-center gap-2">
-              <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full"></div>
-              <span className="text-muted-foreground">Loading tasks...</span>
+            <div className="flex items-center justify-center gap-3">
+              <div className="animate-spin h-5 w-5 border-2 border-slate-300 border-t-transparent rounded-full"></div>
+              <span className="text-slate-600 dark:text-slate-400">Loading your tasks...</span>
             </div>
           </CardContent>
         </Card>
@@ -290,28 +298,37 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
 
   if (error) {
     return (
-      <div className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
+      <div className="space-y-8">
         {/* Add Task Form */}
         <AddTaskForm onTaskAdded={addTask} />
         
         {/* Tasks Header */}
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-2xl font-light text-slate-800 dark:text-slate-100">
             Tasks
           </h2>
-          <Button onClick={fetchTasks} variant="outline" size="sm">
+          <Button 
+            onClick={fetchTasks} 
+            variant="outline" 
+            size="sm"
+            className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-all duration-200"
+          >
             Refresh
           </Button>
         </div>
         
-        <Card className="py-12">
-          <CardContent className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-2">
-              <div className="h-4 w-4 bg-destructive rounded-full"></div>
-              <span className="text-destructive">Error: {error}</span>
+        <Card className="py-16 rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
+          <CardContent className="text-center space-y-6">
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-5 w-5 bg-rose-400 rounded-full"></div>
+              <span className="text-slate-700 dark:text-slate-300">{error}</span>
             </div>
-            <Button onClick={fetchTasks} variant="outline">
-              Retry
+            <Button 
+              onClick={fetchTasks} 
+              variant="outline"
+              className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-all duration-200"
+            >
+              Try Again
             </Button>
           </CardContent>
         </Card>
@@ -320,79 +337,87 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
   }
 
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
+    <div className="space-y-8">
       {/* Add Task Form */}
       <AddTaskForm onTaskAdded={addTask} />
       
       {/* Tasks Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">
+        <h2 className="text-2xl font-light text-slate-800 dark:text-slate-100">
           Tasks ({tasks.length})
         </h2>
-        <Button onClick={fetchTasks} variant="outline" size="sm">
+        <Button 
+          onClick={fetchTasks} 
+          variant="outline" 
+          size="sm"
+          className="border-slate-200 text-slate-600 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
+        >
           Refresh
         </Button>
       </div>
       
       {tasks.length === 0 ? (
-        <Card className="py-12">
+        <Card className="py-16 rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
           <CardContent className="text-center">
-            <p className="text-muted-foreground">
-              No tasks found. Add your first task above!
+            <p className="text-slate-600 dark:text-slate-400 text-lg">
+              No tasks yet. Create your first one above ✨
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+        <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
           {tasks.map((task) => (
             <Card 
               key={task.id} 
-              className="hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
+              className="rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm hover:shadow-lg hover:shadow-slate-200/50 hover:scale-[1.02] transition-all duration-200 hover:border-slate-300/50"
             >
               {editingTaskId === task.id ? (
                 /* Edit Mode */
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Title
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.title}
-                      onChange={(e) => setEditForm({...editForm, title: e.target.value})}
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                    />
+                <CardContent className="space-y-6 p-8">
+                  <div className="space-y-5">
+                    <div>
+                      <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">
+                        Title
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.title}
+                        onChange={(e) => setEditForm({...editForm, title: e.target.value})}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-2xl bg-white/80 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">
+                        Description
+                      </label>
+                      <textarea
+                        value={editForm.description}
+                        onChange={(e) => setEditForm({...editForm, description: e.target.value})}
+                        rows={3}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-2xl bg-white/80 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200 resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">
+                        Priority
+                      </label>
+                      <select
+                        value={editForm.priority}
+                        onChange={(e) => setEditForm({...editForm, priority: e.target.value as 'low' | 'medium' | 'high'})}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-2xl bg-white/80 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200"
+                      >
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Description
-                    </label>
-                    <textarea
-                      value={editForm.description}
-                      onChange={(e) => setEditForm({...editForm, description: e.target.value})}
-                      rows={2}
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Priority
-                    </label>
-                    <select
-                      value={editForm.priority}
-                      onChange={(e) => setEditForm({...editForm, priority: e.target.value as 'low' | 'medium' | 'high'})}
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                    >
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
-                  </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3 pt-2">
                     <Button
                       onClick={() => updateTask(task.id)}
                       disabled={updatingTaskId === task.id || !editForm.title.trim()}
                       size="sm"
+                      className="bg-gradient-to-r from-emerald-400 to-sky-400 text-white border-0 hover:from-emerald-500 hover:to-sky-500 shadow-sm hover:shadow-md transition-all duration-200"
                     >
                       {updatingTaskId === task.id ? (
                         <>
@@ -400,13 +425,14 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                           Saving...
                         </>
                       ) : (
-                        'Save'
+                        'Save Changes'
                       )}
                     </Button>
                     <Button
                       onClick={cancelEdit}
                       variant="outline"
                       size="sm"
+                      className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-all duration-200"
                     >
                       Cancel
                     </Button>
@@ -415,35 +441,41 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
               ) : (
                 /* View Mode */
                 <>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
+                  <CardHeader className="pb-3 px-8 pt-8">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
                         <div
-                          className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                            task.completed ? 'bg-green-500' : 'bg-muted-foreground'
+                          className={`w-2.5 h-2.5 rounded-full flex-shrink-0 mt-2 transition-all duration-200 ${
+                            task.completed ? 'bg-emerald-400' : 'bg-slate-300'
                           }`}
                         />
-                        <CardTitle className={`text-lg ${
-                          task.completed ? 'line-through text-muted-foreground' : ''
-                        }`}>
-                          {task.title}
-                        </CardTitle>
-                        {getPriorityBadge(task.priority)}
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className={`text-lg font-semibold leading-tight transition-all duration-200 ${
+                            task.completed ? 'line-through text-slate-500 dark:text-slate-400' : 'text-slate-800 dark:text-slate-100'
+                          }`}>
+                            {task.title}
+                          </CardTitle>
+                          <div className="mt-3">
+                            {getPriorityBadge(task.priority)}
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-shrink-0">
                         <Button
                           onClick={() => startEdit(task)}
                           disabled={updatingTaskId === task.id}
                           variant="outline"
                           size="sm"
+                          className="border-slate-200 text-slate-600 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
                         >
                           Edit
                         </Button>
                         <Button
                           onClick={() => deleteTask(task.id)}
                           disabled={updatingTaskId === task.id}
-                          variant="destructive"
+                          variant="outline"
                           size="sm"
+                          className="border-rose-200 text-rose-600 hover:bg-rose-50 hover:shadow-sm transition-all duration-200"
                         >
                           {updatingTaskId === task.id ? 'Deleting...' : 'Delete'}
                         </Button>
@@ -451,58 +483,63 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                     </div>
                   </CardHeader>
                   
-                  <CardContent>
+                  <CardContent className="pt-0 px-8 pb-8">
                     {task.description && (
-                      <p className="text-muted-foreground mb-4">
+                      <p className="text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">
                         {task.description}
                       </p>
                     )}
                     
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className={`font-medium ${
-                          task.completed ? 'text-green-600' : 'text-orange-600'
-                        }`}>
-                          {task.completed ? 'Completed' : 'Pending'}
-                        </span>
-                        <span>Created: {formatDate(task.createdAt)}</span>
+                    <div className="space-y-4">
+                      <div className="text-xs text-slate-500 dark:text-slate-500">
+                        {formatDate(task.createdAt)}
                       </div>
                       
-                      {!task.completed ? (
-                        <Button
-                          onClick={() => markAsComplete(task.id)}
-                          disabled={updatingTaskId === task.id}
-                          variant="outline"
-                          size="sm"
-                          className="bg-green-50 text-green-700 hover:bg-green-100 border-green-200"
-                        >
-                          {updatingTaskId === task.id ? (
-                            <>
-                              <div className="animate-spin h-3 w-3 border-2 border-green-600 border-t-transparent rounded-full mr-2"></div>
-                              Updating...
-                            </>
-                          ) : (
-                            'Mark Complete'
-                          )}
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={() => toggleTaskComplete(task.id, task.completed)}
-                          disabled={updatingTaskId === task.id}
-                          variant="outline"
-                          size="sm"
-                          className="bg-orange-50 text-orange-700 hover:bg-orange-100 border-orange-200"
-                        >
-                          {updatingTaskId === task.id ? (
-                            <>
-                              <div className="animate-spin h-3 w-3 border-2 border-orange-600 border-t-transparent rounded-full mr-2"></div>
-                              Updating...
-                            </>
-                          ) : (
-                            'Mark Pending'
-                          )}
-                        </Button>
-                      )}
+                      <div className="flex items-center justify-between">
+                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                          task.completed 
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+                            : 'bg-sky-50 text-sky-700 border border-sky-200'
+                        }`}>
+                          {task.completed ? '✓ Completed' : '○ In Progress'}
+                        </span>
+                        
+                        {!task.completed ? (
+                          <Button
+                            onClick={() => markAsComplete(task.id)}
+                            disabled={updatingTaskId === task.id}
+                            variant="outline"
+                            size="sm"
+                            className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-emerald-200 hover:shadow-sm transition-all duration-200"
+                          >
+                            {updatingTaskId === task.id ? (
+                              <>
+                                <div className="animate-spin h-3 w-3 border-2 border-emerald-600 border-t-transparent rounded-full mr-2"></div>
+                                Updating...
+                              </>
+                            ) : (
+                              'Complete'
+                            )}
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => toggleTaskComplete(task.id, task.completed)}
+                            disabled={updatingTaskId === task.id}
+                            variant="outline"
+                            size="sm"
+                            className="bg-sky-50 text-sky-700 hover:bg-sky-100 border-sky-200 hover:shadow-sm transition-all duration-200"
+                          >
+                            {updatingTaskId === task.id ? (
+                              <>
+                                <div className="animate-spin h-3 w-3 border-2 border-sky-600 border-t-transparent rounded-full mr-2"></div>
+                                Updating...
+                              </>
+                            ) : (
+                              'Reopen'
+                            )}
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </>
