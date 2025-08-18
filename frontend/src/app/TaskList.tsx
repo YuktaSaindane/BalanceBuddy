@@ -25,9 +25,10 @@ interface TasksResponse {
 
 interface TaskListProps {
   refreshTrigger?: number; // Optional prop to trigger refresh from parent
+  onTaskUpdate?: () => void; // Callback to notify parent when tasks are updated
 }
 
-export default function TaskList({ refreshTrigger }: TaskListProps) {
+export default function TaskList({ refreshTrigger, onTaskUpdate }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,6 +54,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       const data: TasksResponse = await response.json();
       if (data.success) {
         setTasks(data.data);
+        onTaskUpdate?.(); // Notify parent component
       } else {
         throw new Error('Failed to fetch tasks');
       }
@@ -67,6 +69,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
   const addTask = (newTask: Task) => {
     // Add the new task to the beginning of the tasks array for immediate display
     setTasks(prevTasks => [newTask, ...prevTasks]);
+    onTaskUpdate?.(); // Notify parent component
   };
 
   const startEdit = (task: Task) => {
@@ -118,6 +121,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
         // Exit edit mode
         setEditingTaskId(null);
         setEditForm({ title: '', description: '', priority: 'medium' });
+        onTaskUpdate?.(); // Notify parent component
       } else {
         throw new Error(result.error || 'Failed to update task');
       }
@@ -150,6 +154,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       if (result.success) {
         // Remove the task from local state immediately
         setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+        onTaskUpdate?.(); // Notify parent component
       } else {
         throw new Error(result.error || 'Failed to delete task');
       }
@@ -184,6 +189,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       if (result.success) {
         // Refresh the task list after successful update
         await fetchTasks();
+        onTaskUpdate?.(); // Notify parent component
       } else {
         throw new Error(result.error || 'Failed to update task');
       }
@@ -218,6 +224,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       if (result.success) {
         // Refresh the task list after successful update
         await fetchTasks();
+        onTaskUpdate?.(); // Notify parent component
       } else {
         throw new Error(result.error || 'Failed to update task');
       }

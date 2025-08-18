@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfcff;
+  --background: #fefefe;
   --foreground: #4c1d95;
   --card: #ffffff;
   --card-foreground: #4c1d95;
@@ -13,19 +13,19 @@
   --secondary: #f8fafc;
   --secondary-foreground: #6b21a8;
   --muted: #f1f5f9;
-  --muted-foreground: #7c2d12;
+  --muted-foreground: #6b7280;
   --accent: #ede9fe;
   --accent-foreground: #6b21a8;
-  --destructive: #dc2626;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
+  --border: #e5e7eb;
   --input: #f8fafc;
   --ring: #7c3aed;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: #fdfcff;
+  --background: #fefefe;
   --foreground: #4c1d95;
   --card: #ffffff;
   --card-foreground: #4c1d95;
@@ -36,18 +36,18 @@
   --secondary: #f8fafc;
   --secondary-foreground: #6b21a8;
   --muted: #f1f5f9;
-  --muted-foreground: #7c2d12;
+  --muted-foreground: #6b7280;
   --accent: #ede9fe;
   --accent-foreground: #6b21a8;
-  --destructive: #dc2626;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
+  --border: #e5e7eb;
   --input: #f8fafc;
   --ring: #7c3aed;
 }
 
 body {
-  background: linear-gradient(135deg, #fdfcff 0%, #f8fafc 50%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #fefefe 0%, #f8fafc 25%, #ede9fe 75%, #f3f4f6 100%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
@@ -58,46 +58,132 @@ body {
   overflow-x: hidden;
 }
 
-/* Clean glass-morphism utilities for light theme */
+/* Light glass-morphism utilities */
 .glass {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.1);
 }
 
 .glass-light {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(25px);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
 }
 
 .glass-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.1);
+  box-shadow: 0 10px 40px rgba(124, 58, 237, 0.06);
 }
 
 .glass-input {
   background: rgba(248, 250, 252, 0.8);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
-/* Subtle floating elements for calm ambiance */
+/* Timeline and calendar specific styles */
+.timeline-slot {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  transition: all 0.3s ease;
+}
+
+.timeline-slot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1);
+}
+
+.task-block {
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.task-block:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15);
+}
+
+/* Priority color coding - light theme */
+.priority-high {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-left: 4px solid #ef4444;
+  color: #7f1d1d;
+}
+
+.priority-medium {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-left: 4px solid #f59e0b;
+  color: #78350f;
+}
+
+.priority-low {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-left: 4px solid #22c55e;
+  color: #14532d;
+}
+
+/* Drag and drop styles */
+.draggable {
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.draggable:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+  z-index: 1000;
+  box-shadow: 0 15px 35px rgba(124, 58, 237, 0.3);
+}
+
+.drop-zone {
+  position: relative;
+}
+
+.drop-zone.drag-over {
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: inset 0 0 20px rgba(124, 58, 237, 0.1);
+}
+
+.drop-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(124, 58, 237, 0.05);
+  border: 2px dashed rgba(124, 58, 237, 0.3);
+  border-radius: 0.5rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.drop-zone.drag-over .drop-indicator {
+  opacity: 1;
+}
+
+/* Floating elements for light ambiance */
 .floating-element {
   position: absolute;
   border-radius: 50%;
   filter: blur(40px);
-  opacity: 0.15;
+  opacity: 0.1;
   animation: gentle-float 12s ease-in-out infinite;
 }
 
 .floating-element-1 {
   width: 200px;
   height: 200px;
-  background: linear-gradient(45deg, #a855f7, #c084fc);
+  background: linear-gradient(45deg, #7c3aed, #a855f7);
   top: 15%;
   left: 80%;
   animation-delay: 0s;
@@ -106,7 +192,7 @@ body {
 .floating-element-2 {
   width: 150px;
   height: 150px;
-  background: linear-gradient(45deg, #ddd6fe, #a855f7);
+  background: linear-gradient(45deg, #6366f1, #8b5cf6);
   top: 60%;
   left: 10%;
   animation-delay: 4s;
@@ -115,7 +201,7 @@ body {
 .floating-element-3 {
   width: 180px;
   height: 180px;
-  background: linear-gradient(45deg, #ede9fe, #c084fc);
+  background: linear-gradient(45deg, #ec4899, #7c3aed);
   bottom: 20%;
   right: 20%;
   animation-delay: 8s;
@@ -123,28 +209,28 @@ body {
 
 /* Enhanced scrollbar for light theme */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: rgba(248, 250, 252, 0.5);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.3);
-  border-radius: 3px;
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 4px;
   transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.5);
+  background: rgba(124, 58, 237, 0.5);
 }
 
-/* Professional focus and interaction styles */
+/* Focus and interaction styles */
 .focus-ring {
   outline: none;
-  ring: 2px solid rgba(139, 92, 246, 0.3);
+  ring: 2px solid rgba(124, 58, 237, 0.3);
   ring-offset: 2px;
   ring-offset-color: #ffffff;
 }
@@ -154,12 +240,12 @@ body {
 }
 
 .input-focus:focus {
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* Typography enhancements for scheduling app */
+/* Typography for light theme */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -174,49 +260,61 @@ p, span, div {
   color: #4c1d95;
 }
 
-/* Placeholder styling for calm, focused placeholders */
+/* Placeholder styling */
 ::placeholder {
-  color: #a78bfa;
+  color: #9ca3af;
   font-weight: 400;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
-/* Button and interactive element styling */
+/* Button styles for light theme */
 .btn-primary {
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
   color: white;
   border: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
-  box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+  box-shadow: 0 6px 25px rgba(124, 58, 237, 0.4);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.9);
   color: #6b21a8;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(124, 58, 237, 0.2);
   transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
   background: rgba(237, 233, 254, 0.5);
-  border-color: rgba(139, 92, 246, 0.3);
+  border-color: rgba(124, 58, 237, 0.3);
   transform: translateY(-1px);
 }
 
-/* Card hover effects for professional feel */
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+}
+
+/* Card hover effects */
 .card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
 }
 
 /* Animations */
@@ -230,6 +328,10 @@ p, span, div {
   66% {
     transform: translateY(10px) translateX(-5px);
   }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 12s ease-in-out infinite;
 }
 
 @keyframes fade-in-smooth {
@@ -254,6 +356,28 @@ p, span, div {
   }
 }
 
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .animate-fade-in-smooth {
   animation: fade-in-smooth 0.6s ease-out;
 }
@@ -262,21 +386,54 @@ p, span, div {
   animation: scale-in-gentle 0.4s ease-out;
 }
 
-/* Priority indicators */
-.priority-high {
-  color: #dc2626;
-  background: rgba(220, 38, 38, 0.1);
-  border-color: rgba(220, 38, 38, 0.2);
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s ease-out;
 }
 
-.priority-medium {
-  color: #ea580c;
-  background: rgba(234, 88, 12, 0.1);
-  border-color: rgba(234, 88, 12, 0.2);
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s ease-out;
 }
 
-.priority-low {
-  color: #059669;
-  background: rgba(5, 150, 105, 0.1);
-  border-color: rgba(5, 150, 105, 0.2);
+/* Utility classes for light theme */
+.text-muted {
+  color: #6b7280;
+}
+
+.text-soft {
+  color: #4c1d95;
+}
+
+.border-muted {
+  border-color: #e5e7eb;
+}
+
+/* Task delete button styles */
+.task-delete-btn {
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.task-block:hover .task-delete-btn {
+  opacity: 1;
+}
+
+/* Scheduling app specific styles */
+.schedule-header {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+}
+
+.time-slot {
+  border-bottom: 1px solid rgba(124, 58, 237, 0.05);
+}
+
+.time-slot:nth-child(even) {
+  background: rgba(124, 58, 237, 0.02);
+}
+
+.current-time-indicator {
+  background: #ef4444;
+  height: 2px;
+  border-radius: 1px;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }

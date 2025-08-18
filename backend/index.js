@@ -53,7 +53,14 @@ app.get('/tasks', (req, res) => {
 // POST /tasks - Add a new task
 app.post('/tasks', (req, res) => {
   try {
-    const { title, description, completed = false, priority = 'medium' } = req.body;
+    const { 
+      title, 
+      description, 
+      completed = false, 
+      priority = 'medium',
+      scheduledTime,
+      duration = 30
+    } = req.body;
     
     // Validate required fields
     const validation = validateTask({ title });
@@ -71,6 +78,8 @@ app.post('/tasks', (req, res) => {
       description: description ? description.trim() : '',
       completed: Boolean(completed),
       priority: ['low', 'medium', 'high'].includes(priority) ? priority : 'medium',
+      scheduledTime: scheduledTime || null,
+      duration: typeof duration === 'number' && duration > 0 ? duration : 30,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -94,7 +103,14 @@ app.post('/tasks', (req, res) => {
 app.put('/tasks/:id', (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, completed, priority } = req.body;
+    const { 
+      title, 
+      description, 
+      completed, 
+      priority,
+      scheduledTime,
+      duration
+    } = req.body;
 
     // Find the task
     const task = findTaskById(id);
@@ -126,6 +142,12 @@ app.put('/tasks/:id', (req, res) => {
     }
     if (priority !== undefined) {
       task.priority = ['low', 'medium', 'high'].includes(priority) ? priority : task.priority;
+    }
+    if (scheduledTime !== undefined) {
+      task.scheduledTime = scheduledTime;
+    }
+    if (duration !== undefined) {
+      task.duration = typeof duration === 'number' && duration > 0 ? duration : task.duration;
     }
 
     task.updatedAt = new Date().toISOString();
