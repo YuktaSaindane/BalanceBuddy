@@ -243,13 +243,13 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case 'high':
-        return <Badge className="bg-rose-100 text-rose-700 border-rose-200 hover:bg-rose-200 transition-all duration-200">High</Badge>;
+        return <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 transition-all duration-200 shadow-sm">🔴 High</Badge>;
       case 'medium':
-        return <Badge className="bg-sky-100 text-sky-700 border-sky-200 hover:bg-sky-200 transition-all duration-200">Medium</Badge>;
+        return <Badge className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100 transition-all duration-200 shadow-sm">🟡 Medium</Badge>;
       case 'low':
-        return <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-200 transition-all duration-200">Low</Badge>;
+        return <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition-all duration-200 shadow-sm">🟢 Low</Badge>;
       default:
-        return <Badge className="bg-zinc-100 text-zinc-700 border-zinc-200">{priority}</Badge>;
+        return <Badge className="bg-slate-50 text-slate-700 border-slate-200 shadow-sm">{priority}</Badge>;
     }
   };
 
@@ -284,11 +284,11 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
           </Button>
         </div>
         
-        <Card className="py-16 rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
+        <Card className="py-16 rounded-3xl glass-card shadow-2xl animate-scale-in">
           <CardContent className="text-center">
-            <div className="flex items-center justify-center gap-3">
-              <div className="animate-spin h-5 w-5 border-2 border-slate-300 border-t-transparent rounded-full"></div>
-              <span className="text-slate-600 dark:text-slate-400">Loading your tasks...</span>
+            <div className="flex items-center justify-center gap-4">
+              <div className="animate-spin h-8 w-8 border-3 border-purple-300/30 border-t-purple-400 rounded-full"></div>
+              <span className="text-off-white/70 font-medium text-lg">Loading your tasks...</span>
             </div>
           </CardContent>
         </Card>
@@ -317,16 +317,20 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
           </Button>
         </div>
         
-        <Card className="py-16 rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
-          <CardContent className="text-center space-y-6">
-            <div className="flex items-center justify-center gap-3">
-              <div className="h-5 w-5 bg-rose-400 rounded-full"></div>
-              <span className="text-slate-700 dark:text-slate-300">{error}</span>
+        <Card className="py-16 rounded-3xl glass-card shadow-2xl animate-scale-in">
+          <CardContent className="text-center space-y-8">
+            <div className="flex items-center justify-center gap-4">
+              <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-off-white font-medium text-lg">{error}</span>
             </div>
             <Button 
               onClick={fetchTasks} 
               variant="outline"
-              className="border-slate-200 text-slate-600 hover:bg-slate-50 transition-all duration-200"
+              className="glass-dark border-purple-400/30 text-purple-300 hover:bg-purple-400/10 transition-all duration-300 shadow-lg transform hover:scale-105"
             >
               Try Again
             </Button>
@@ -341,27 +345,37 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
       {/* Add Task Form */}
       <AddTaskForm onTaskAdded={addTask} />
       
-      {/* Tasks Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-light text-slate-800 dark:text-slate-100">
-          Tasks ({tasks.length})
-        </h2>
-        <Button 
-          onClick={fetchTasks} 
-          variant="outline" 
-          size="sm"
-          className="border-slate-200 text-slate-600 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
-        >
-          Refresh
-        </Button>
-      </div>
+              {/* Tasks Header */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-semibold text-off-white tracking-wide">
+            Tasks ({tasks.length})
+          </h2>
+          <Button 
+            onClick={fetchTasks} 
+            variant="outline" 
+            size="sm"
+            className="glass-dark border-purple-400/30 text-purple-300 hover:bg-purple-400/10 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+          >
+            Refresh
+          </Button>
+        </div>
       
       {tasks.length === 0 ? (
-        <Card className="py-16 rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
+        <Card className="py-20 rounded-3xl glass-card shadow-2xl animate-scale-in">
           <CardContent className="text-center">
-            <p className="text-slate-600 dark:text-slate-400 text-lg">
-              No tasks yet. Create your first one above ✨
-            </p>
+            <div className="space-y-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl glow-purple animate-float">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <p className="text-off-white text-xl font-semibold">
+                No tasks yet. Create your first one above ✨
+              </p>
+              <p className="text-off-white/60 text-base">
+                Start your journey to balanced productivity
+              </p>
+            </div>
           </CardContent>
         </Card>
       ) : (
@@ -369,7 +383,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
           {tasks.map((task) => (
             <Card 
               key={task.id} 
-              className="rounded-3xl shadow-sm border-slate-200/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm hover:shadow-lg hover:shadow-slate-200/50 hover:scale-[1.02] transition-all duration-200 hover:border-slate-300/50"
+              className="glass-card rounded-3xl shadow-2xl hover:shadow-purple-500/20 hover:scale-103 transition-all duration-500 hover:border-purple-400/50 animate-fade-in-up group"
             >
               {editingTaskId === task.id ? (
                 /* Edit Mode */
@@ -417,7 +431,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                       onClick={() => updateTask(task.id)}
                       disabled={updatingTaskId === task.id || !editForm.title.trim()}
                       size="sm"
-                      className="bg-gradient-to-r from-emerald-400 to-sky-400 text-white border-0 hover:from-emerald-500 hover:to-sky-500 shadow-sm hover:shadow-md transition-all duration-200"
+                      className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       {updatingTaskId === task.id ? (
                         <>
@@ -450,8 +464,8 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                           }`}
                         />
                         <div className="flex-1 min-w-0">
-                          <CardTitle className={`text-lg font-semibold leading-tight transition-all duration-200 ${
-                            task.completed ? 'line-through text-slate-500 dark:text-slate-400' : 'text-slate-800 dark:text-slate-100'
+                          <CardTitle className={`text-xl font-semibold leading-tight transition-all duration-300 ${
+                            task.completed ? 'line-through text-off-white/50' : 'text-off-white'
                           }`}>
                             {task.title}
                           </CardTitle>
@@ -466,7 +480,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                           disabled={updatingTaskId === task.id}
                           variant="outline"
                           size="sm"
-                          className="border-slate-200 text-slate-600 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
+                          className="glass-dark border-purple-400/30 text-purple-300 hover:bg-purple-400/10 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                         >
                           Edit
                         </Button>
@@ -475,7 +489,7 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                           disabled={updatingTaskId === task.id}
                           variant="outline"
                           size="sm"
-                          className="border-rose-200 text-rose-600 hover:bg-rose-50 hover:shadow-sm transition-all duration-200"
+                          className="glass-dark border-red-400/30 text-red-300 hover:bg-red-400/10 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                         >
                           {updatingTaskId === task.id ? 'Deleting...' : 'Delete'}
                         </Button>
@@ -485,21 +499,21 @@ export default function TaskList({ refreshTrigger }: TaskListProps) {
                   
                   <CardContent className="pt-0 px-8 pb-8">
                     {task.description && (
-                      <p className="text-slate-600 dark:text-slate-400 mb-5 leading-relaxed">
+                      <p className="text-off-white/70 mb-6 leading-relaxed text-base">
                         {task.description}
                       </p>
                     )}
                     
                     <div className="space-y-4">
-                      <div className="text-xs text-slate-500 dark:text-slate-500">
+                      <div className="text-sm text-off-white/50 font-medium">
                         {formatDate(task.createdAt)}
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                        <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                           task.completed 
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
-                            : 'bg-sky-50 text-sky-700 border border-sky-200'
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shadow-lg' 
+                            : 'bg-blue-500/20 text-blue-300 border border-blue-400/30 shadow-lg'
                         }`}>
                           {task.completed ? '✓ Completed' : '○ In Progress'}
                         </span>

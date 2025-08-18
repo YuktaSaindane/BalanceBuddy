@@ -49,7 +49,7 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
     
     // Basic validation
     if (!formData.title.trim()) {
-      setError('Title is required');
+      setError('Task title is required');
       return;
     }
 
@@ -85,7 +85,7 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
           priority: 'medium'
         });
         
-        setSuccess('Task added successfully!');
+        setSuccess('Task scheduled successfully!');
         
         // Call the callback with the new task data for immediate display
         onTaskAdded(result.data);
@@ -94,23 +94,48 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
       }
     } catch (err) {
       console.error('Error creating task:', err);
-      setError(err instanceof Error ? err.message : 'Failed to create task');
+      setError(err instanceof Error ? err.message : 'Failed to schedule task');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'text-red-600';
+      case 'medium':
+        return 'text-orange-600';
+      case 'low':
+        return 'text-green-600';
+      default:
+        return 'text-purple-600';
+    }
+  };
+
   return (
-    <div className="w-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm p-8 rounded-3xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
-      <h2 className="text-xl font-light mb-6 text-slate-800 dark:text-slate-100">
-        Create a new task
-      </h2>
+    <div className="glass-card rounded-2xl p-8 shadow-lg animate-scale-in-gentle">
+      <div className="flex items-center space-x-4 mb-8">
+        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 className="text-2xl font-semibold text-purple-800">
+            Schedule New Task
+          </h2>
+          <p className="text-purple-600 text-sm">
+            Add a task to your daily planning schedule
+          </p>
+        </div>
+      </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title Field */}
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-            Title
+        <div className="space-y-2">
+          <label htmlFor="title" className="block text-sm font-semibold text-purple-800">
+            Task Title
           </label>
           <input
             type="text"
@@ -118,16 +143,16 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl bg-white/80 dark:bg-slate-700/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200 placeholder:text-slate-400"
-            placeholder="What would you like to accomplish?"
+            className="w-full px-4 py-3 border border-purple-200 rounded-xl glass-input text-purple-900 input-focus placeholder:text-purple-400 font-medium"
+            placeholder="e.g., Review quarterly reports, Morning team standup, Client presentation prep"
             required
           />
         </div>
 
         {/* Description Field */}
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-            Description
+        <div className="space-y-2">
+          <label htmlFor="description" className="block text-sm font-semibold text-purple-800">
+            Task Details
           </label>
           <textarea
             id="description"
@@ -135,42 +160,62 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
             value={formData.description}
             onChange={handleInputChange}
             rows={3}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl bg-white/80 dark:bg-slate-700/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200 resize-none placeholder:text-slate-400"
-            placeholder="Add any additional details..."
+            className="w-full px-4 py-3 border border-purple-200 rounded-xl glass-input text-purple-900 input-focus placeholder:text-purple-400 resize-none"
+            placeholder="Add context, deadlines, or notes to help you stay organized and focused during this task..."
           />
         </div>
 
         {/* Priority Dropdown */}
-        <div>
-          <label htmlFor="priority" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-            Priority
+        <div className="space-y-2">
+          <label htmlFor="priority" className="block text-sm font-semibold text-purple-800">
+            Priority Level
           </label>
-          <select
-            id="priority"
-            name="priority"
-            value={formData.priority}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl bg-white/80 dark:bg-slate-700/80 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 focus:border-slate-300 transition-all duration-200"
-          >
-            <option value="low">Low Priority</option>
-            <option value="medium">Medium Priority</option>
-            <option value="high">High Priority</option>
-          </select>
+          <div className="relative">
+            <select
+              id="priority"
+              name="priority"
+              value={formData.priority}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-purple-200 rounded-xl glass-input text-purple-900 input-focus appearance-none cursor-pointer font-medium"
+            >
+              <option value="low" className="text-green-600">🟢 Low Priority - Flexible timing</option>
+              <option value="medium" className="text-orange-600">🟡 Medium Priority - Standard timeline</option>
+              <option value="high" className="text-red-600">🔴 High Priority - Urgent deadline</option>
+            </select>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <svg className="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 text-sm">
+            <span className={`font-medium ${getPriorityColor(formData.priority)}`}>
+              Selected: {formData.priority.charAt(0).toUpperCase() + formData.priority.slice(1)} Priority
+            </span>
+          </div>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="flex items-center gap-3 p-4 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-2xl">
-            <div className="h-4 w-4 bg-rose-400 rounded-full flex-shrink-0"></div>
-            <span className="text-rose-700 dark:text-rose-400 text-sm">{error}</span>
+          <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl animate-fade-in-smooth">
+            <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <span className="text-red-700 font-medium">{error}</span>
           </div>
         )}
 
         {/* Success Message */}
         {success && (
-          <div className="flex items-center gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl">
-            <div className="h-4 w-4 bg-emerald-400 rounded-full flex-shrink-0"></div>
-            <span className="text-emerald-700 dark:text-emerald-400 text-sm">{success}</span>
+          <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl animate-fade-in-smooth">
+            <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <span className="text-green-700 font-medium">{success}</span>
           </div>
         )}
 
@@ -178,15 +223,20 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-emerald-400 to-sky-400 hover:from-emerald-500 hover:to-sky-500 disabled:from-slate-300 disabled:to-slate-400 text-white font-medium py-4 px-6 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-300/50 shadow-sm hover:shadow-md transform hover:scale-[1.02] disabled:hover:scale-100 disabled:cursor-not-allowed"
+          className="w-full btn-primary py-4 px-6 text-lg font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <div className="flex items-center justify-center gap-3">
-              <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-              <span>Creating task...</span>
+              <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div>
+              <span>Scheduling task...</span>
             </div>
           ) : (
-            'Create Task'
+            <div className="flex items-center justify-center gap-3">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Add to Schedule</span>
+            </div>
           )}
         </button>
       </form>
